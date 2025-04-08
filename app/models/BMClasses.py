@@ -3,6 +3,11 @@ from typing import List
 from typing import Optional
 from enum import Enum
 
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
 class getImage(BaseModel):
     image_path: str
 
