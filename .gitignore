@@ -1,0 +1,11 @@
+venv/
+
+__pycache__/git add .
+
+*.pyc
+
+.vscode/
+
+.env
+
+*.sqlite3
