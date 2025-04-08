@@ -10,3 +10,9 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 db = SessionLocal()  
+
+def get_db():
+    try:
+        yield db # if we use return => the connection won't close automatically after the processing is finished
+    finally:
+        db.close()
