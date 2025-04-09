@@ -13,6 +13,7 @@ auth_token = OAuth2PasswordBearer(tokenUrl="login")
 @rou.post("/show_place/")
 def show_place(place_info: getPlaceInfo, token: str = Depends(auth_token), db: Session = Depends(get_db)):
     user_id = get_user_from_token(token)
+    
     if not user_id:
         raise HTTPException(status_code=401, detail="Invalid token")
 
