@@ -2,7 +2,6 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, 
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from sqlalchemy import CheckConstraint, func, UniqueConstraint
 
-
 engine = create_engine('sqlite:///./Tasheh.db', echo=True) # echo=True => debug mode
 Base = declarative_base()
 
