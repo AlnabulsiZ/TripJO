@@ -67,6 +67,7 @@ class Gender(str, Enum):
 class GuideUpdate(BaseModel):
     Fname: Optional[str]
     Lname: Optional[str]
+    email: Optional[str]
     password: Optional[str]
     phone: Optional[str]
     national_id: Optional[str]
@@ -77,7 +78,8 @@ class GuideUpdate(BaseModel):
 
 class ImageUpdate(BaseModel):
     image_path: Optional[str]
-    
+
+
 
 class PlaceUpdate(BaseModel):
     name: Optional[str]
@@ -94,9 +96,6 @@ class OwnerUpdate(UserUpdate):
     Lname: Optional[str]
     password: Optional[str]
     phone: Optional[str]
-
-class GetImage(BaseModel):
-    image_path: str
 
 class getFavPlace(BaseModel):
     name: str

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from ..DB.database import get_db
 from werkzeug.security import check_password_hash
 from fastapi.security import OAuth2PasswordBearer
-from ..models.BMClasses import LoginRequest
+from ..models.serializers import LoginRequest
 from ..DB.tables import User
 
 rou = APIRouter()

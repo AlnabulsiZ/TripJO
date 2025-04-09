@@ -1,7 +1,7 @@
 import sqlite3
 from fastapi import APIRouter, HTTPException, File, UploadFile, Depends
 from ..DB.database import get_db
-from ..models.BMClasses import UserRegister, OwnerRegister, GuideRegister
+from ..models.serializers import UserRegister, OwnerRegister, GuideRegister
 import os
 from werkzeug.security import generate_password_hash
 from typing import List
