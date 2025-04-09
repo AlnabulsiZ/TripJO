@@ -3,7 +3,6 @@ from typing import List
 from typing import Optional
 from enum import Enum
 
-
 class LoginRequest(BaseModel):
     email: str
     password: str
@@ -107,3 +106,11 @@ class getFavGuide(BaseModel):
     Fname: str
     Lname: str
     rate: float    
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+class ResetPasswordRequest(BaseModel):
+    email: str
+    reset_code: str
+    new_password: str

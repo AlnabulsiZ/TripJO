@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends
 from werkzeug.security import generate_password_hash
 from fastapi.security import OAuth2PasswordBearer
 import jwt
@@ -8,7 +8,8 @@ from sqlalchemy.orm import Session
 from ..models.serializers import UserRegister, GuideUpdate, OwnerUpdate
 from ..DB.tables import User, Place, Image
 
-app = FastAPI()
+rou = APIRouter()
+
 auth_token = OAuth2PasswordBearer(tokenUrl="login")  
 
 
@@ -25,7 +26,7 @@ def get_user_from_token(token: str):
 
 
 
-@app.post("/account_info/normal_user/")
+@rou.post("/account_info/normal_user/")
 def account_info_normal_user(user: UserRegister, token: str = Depends(auth_token),db: Session = Depends(get_db)):
 
     userId = get_user_from_token(token)
@@ -56,7 +57,7 @@ def account_info_normal_user(user: UserRegister, token: str = Depends(auth_token
 
 
 
-@app.post("/account_info/guide_user/")
+@rou.post("/account_info/guide_user/")
 def account_info_guide_user(guide: GuideUpdate, token: str = Depends(auth_token), db: Session = Depends(get_db)):
     
     userId = get_user_from_token(token)
@@ -102,7 +103,7 @@ def account_info_guide_user(guide: GuideUpdate, token: str = Depends(auth_token)
 
     
 
-@app.post("/account_info/owner/")
+@rou.post("/account_info/owner/")
 def account_info_owner(owner: OwnerUpdate, token: str = Depends(auth_token), db: Session = Depends(get_db)):
 
     userId = get_user_from_token(token) # => user id = owner id = place id 
