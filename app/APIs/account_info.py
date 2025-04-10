@@ -32,24 +32,24 @@ def account_info_normal_user(user: UserRegister, token: str = Depends(auth_token
     userId = get_user_from_token(token)
 
     try:
-        dbUser = db.query(User).filter(User.Id == userId).first() 
+        dbUser = db.query(User).filter(User.id == userId).first() 
         if not dbUser:
             raise HTTPException(status_code=401, detail="Invalid user")
         
         else:
-            if dbUser.Email:
-                dbUser.Email = user.email
+            if dbUser.email:
+                dbUser.email = user.email
 
-            if dbUser.Password:
-                dbUser.Email = user.password
+            if dbUser.password:
+                dbUser.email = user.password
             
             db.commit() 
 
             return { 
-                "First name": dbUser.Fname,
-                "Last name": dbUser.Lname,
-                "Email": dbUser.Email,
-                "password": dbUser.Password
+                "First name": dbUser.fname,
+                "Last name": dbUser.lname,
+                "Email": dbUser.email,
+                "password": dbUser.password
                 }
 
     except Exception as e:
@@ -62,39 +62,39 @@ def account_info_guide_user(guide: GuideUpdate, token: str = Depends(auth_token)
     
     userId = get_user_from_token(token)
     try:
-        dbUser = db.query(User).filter(User.Id == userId).first() 
+        dbUser = db.query(User).filter(User.id == userId).first() 
         if not dbUser:
             raise HTTPException(status_code=404, detail="User not found")
-        if dbUser.Role != "guide":  
+        if dbUser.role != "guide":  
             raise HTTPException(status_code=403, detail="User is not a guide.")
         else :
 
-            if dbUser.Password:
-                dbUser.Name = guide.password
+            if dbUser.password:
+                dbUser.name = guide.password
             
-            if dbUser.Email:
-                dbUser.Email = guide.email
+            if dbUser.email:
+                dbUser.email = guide.email
 
-            if dbUser.Phone:
-                dbUser.Phone = guide.phone
+            if dbUser.phone:
+                dbUser.phone = guide.phone
 
-            if dbUser.PersonalImage:
-                dbUser.PersonalImage = guide.personal_image
+            if dbUser.personal_image:
+                dbUser.personal_image = guide.personal_image
             
-            if dbUser.Age:
-                dbUser.Age = guide.age
+            if dbUser.age:
+                dbUser.age = guide.age
             
             db.commit() 
 
             return {
-                "Fname": dbUser.Fname,
-                "Lname": dbUser.Lname,
-                "email": dbUser.Email,
-                "phone": dbUser.Phone,
-                "national_id": dbUser.NationalId,
-                "personal_image": dbUser.PersonalImage,
-                "gender": dbUser.Gender,
-                "age": dbUser.Age
+                "Fname": dbUser.fname,
+                "Lname": dbUser.lname,
+                "email": dbUser.email,
+                "phone": dbUser.phone,
+                "national_id": dbUser.national_id,
+                "personal_image": dbUser.personal_image,
+                "gender": dbUser.gender,
+                "age": dbUser.age
                 }
 
     except Exception as e:
@@ -110,28 +110,28 @@ def account_info_owner(owner: OwnerUpdate, token: str = Depends(auth_token), db:
     try:
         dbUser = db.query(User).filter(User.Id == userId).first() 
         dbPlace = db.query(Place).filter(Place.Id == userId).first()
-        dbImage = db.query(Image.ImagePath).filter(Image.placeId == userId).all()
+        dbImage = db.query(Image.image_path).filter(Image.place_id == userId).all()
 
 
 
         if not dbUser:
             raise HTTPException(status_code=404, detail="User not found")
-        if dbUser.Role != "owner":
+        if dbUser.role != "owner":
             raise HTTPException(status_code=404, detail="User is not owner")
         
         else:
 
-            if dbPlace.Name:
-               dbPlace.Name = owner.place.name
+            if dbPlace.name:
+               dbPlace.name = owner.place.name
 
-            if dbPlace.City:
-                dbPlace.City = owner.place.city
+            if dbPlace.city:
+                dbPlace.city = owner.place.city
 
-            if dbPlace.Type:
-                dbPlace.Type = owner.place.type
+            if dbPlace.type:
+                dbPlace.type = owner.place.type
 
-            if dbPlace.Description:
-                dbPlace.Description = owner.place.description
+            if dbPlace.description:
+                dbPlace.description = owner.place.description
             ImageList=[]
             if dbImage:
                 for img in dbImage:
@@ -140,18 +140,18 @@ def account_info_owner(owner: OwnerUpdate, token: str = Depends(auth_token), db:
 
             db.commit()        
 
-            FullName = dbUser.Fname+" "+dbUser.Lname
+            FullName = dbUser.fname+" "+dbUser.lname
             return{
                 # owner info
                 "Owner name":FullName,
-                "Email": dbUser.Email,
-                "Phone": dbUser.Phone,
-                "National_id": dbUser.NationalId,
+                "Email": dbUser.email,
+                "Phone": dbUser.phone,
+                "National_id": dbUser.national_id,
                 # place info
-                "Place naame": dbPlace.Name,
-                "City": dbPlace.City,
-                "Type": dbPlace.Type,
-                "Description": dbPlace.Description,
+                "Place naame": dbPlace.name,
+                "City": dbPlace.city,
+                "Type": dbPlace.type,
+                "Description": dbPlace.description,
                 "Place images list": ImageList
             }
         

@@ -29,23 +29,23 @@ def create_access_token(data: dict, expire_delta: timedelta = timedelta(minutes=
 @rou.post("/login")
 def login(user: LoginRequest, db: Session = Depends(get_db)):
    
-    dbUser = db.query(User).filter(User.Email == user.email).first() # => find user email
+    dbUser = db.query(User).filter(User.email == user.email).first() # => find user email
 
     if not dbUser:
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
-    if not check_password_hash(dbUser.Password, user.password): # => check hashed password
+    if not check_password_hash(dbUser.password, user.password): # => check hashed password
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
    
     token_data = { # => create access token
-        "sub": dbUser.Email,
-        "role": dbUser.Role
+        "sub": dbUser.email,
+        "role": dbUser.role
     }
     AccessToken = create_access_token(data=token_data)
 
     return {
         "access_token": AccessToken,
         "token_type": "bearer",
-        "user_role": dbUser.Role
+        "user_role": dbUser.role
     }

@@ -26,11 +26,11 @@ def get_places_by_city(db: Session = Depends(get_db)):
 
         for place in places:
             city = place.City
-            image_path = place.images[0].ImagePath if place.images else "default.jpg"
+            image_path = place.images[0].image_path if place.images else "default.jpg"
 
             place_data = {
-                "name": place.Name,
-                "rate": place.Rate,
+                "name": place.name,
+                "rate": place.rate,
                 "image_path": image_path
             }
 

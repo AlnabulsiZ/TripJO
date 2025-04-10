@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import SQLAlchemyError
 from ..DB.tables import Place, User
 from ..DB.database import get_db
-
+# بده تعديل هاد الفايل 
 rou = APIRouter()
 
 @rou.post("/search/")
@@ -17,26 +17,26 @@ def search(
         if (name or type) and not guide:
             query = db.query(Place)
             if name:
-                query = query.filter(Place.Name.ilike(f"%{name.strip()}%"))
+                query = query.filter(Place.name.ilike(f"%{name.strip()}%"))
             if type:
-                query = query.filter(Place.Type.ilike(f"%{type.strip()}%"))
+                query = query.filter(Place.type.ilike(f"%{type.strip()}%"))
 
             places = query.all()
             return {
                 "places": [
-                    {"name": p.Name, "type": p.Type} for p in places
+                    {"name": p.name, "type": p.type} for p in places
                 ]
             }
 
         elif guide:
             query = db.query(User).filter(
-                User.Role == "guide",
-                (User.Fname.ilike(f"%{guide.strip()}%")) | (User.Lname.ilike(f"%{guide.strip()}%"))
+                User.role == "guide",
+                (User.fname.ilike(f"%{guide.strip()}%")) | (User.lname.ilike(f"%{guide.strip()}%"))
             )
             guides = query.all()
             return {
                 "guides": [
-                    {"Fname": g.Fname, "Lname": g.Lname} for g in guides
+                    {"Fname": g.fname, "Lname": g.lname} for g in guides
                 ]
             }
 
@@ -53,7 +53,7 @@ def get_top_places(db: Session = Depends(get_db)):
         places = (
             db.query(Place)
             .options(joinedload(Place.images))
-            .order_by(Place.Rate.desc())
+            .order_by(Place.rate.desc())
             .limit(10)
             .all()
         )
@@ -62,9 +62,9 @@ def get_top_places(db: Session = Depends(get_db)):
         for place in places:
             image_path = place.images[0].ImagePath if place.images else "default.jpg"
             result.append({
-                "name": place.Name,
-                "rate": place.Rate,
-                "city": place.City,
+                "name": place.name,
+                "rate": place.rate,
+                "city": place.city,
                 "image_path": image_path
             })
 
@@ -79,14 +79,14 @@ def get_top_guides(db: Session = Depends(get_db)):
     try:
         guides = (
             db.query(User)
-            .filter(User.Role == "guide")
-            .order_by(User.Rate.desc())
+            .filter(User.role == "guide")
+            .order_by(User.rate.desc())
             .limit(10)
             .all()
         )
         return {
             "top_guides": [
-                {"Fname": g.Fname, "personal_image": g.PersonalImage} for g in guides
+                {"Fname": g.fname, "personal_image": g.personal_image} for g in guides
             ]
         }
 

@@ -19,9 +19,9 @@ async def add_to_favorites(
     user_id = user["id"]
     
     existing_fav = db.query(Favorites).filter(
-        Favorites.UserId == user_id,
-        Favorites.PlaceId == data.place_id if data.place_id else None,
-        Favorites.GuideId == data.guide_id if data.guide_id else None
+        Favorites.user_id == user_id,
+        Favorites.place_id == data.place_id if data.place_id else None,
+        Favorites.guide_id == data.guide_id if data.guide_id else None
     ).first()
     
     if existing_fav:
@@ -50,10 +50,10 @@ async def get_favorite_places(
     
     try:
         favorites = db.query(Favorites, Place, Image).\
-            join(Place, Favorites.PlaceId == Place.Id).\
-            join(Image, Place.Id == Image.PlaceId).\
-            filter(Favorites.UserId == user_id).\
-            group_by(Place.Id).\
+            join(Place, Favorites.place_id == Place.Id).\
+            join(Image, Place.id == Image.place_id).\
+            filter(Favorites.user_id == user_id).\
+            group_by(Place.id).\
             all()
         
         if not favorites:
@@ -62,10 +62,10 @@ async def get_favorite_places(
         result = []
         for fav, place, image in favorites:
             result.append(GetFavPlace(
-                name=place.Name,
-                city=place.City,
-                rate=place.Rate,
-                images=[getImage(image_path=image.ImagePath)] if image else []
+                name=place.name,
+                city=place.city,
+                rate=place.rate,
+                images=[getImage(image_path=image.image_path)] if image else []
             ))
         
         return result
@@ -82,18 +82,18 @@ async def get_favorite_guides(
     
     try:
         guides = db.query(Favorites, User).\
-            join(User, Favorites.GuideId == User.Id).\
+            join(User, Favorites.guide_id == User.id).\
             filter(
-                Favorites.UserId == user_id,
-                User.Role == 'guide'
+                Favorites.user_id == user_id,
+                User.role == 'guide'
             ).\
             all()
         
         return [
             GetFavGuide(
-                name=f"{guide.Fname} {guide.Lname}",
-                rate=guide.Rate,
-                profile_image=guide.ProfileImage
+                name=f"{guide.fname} {guide.lname}",
+                rate=guide.rate,
+                profile_image=guide.profile_image
             )
             for _, guide in guides
         ]

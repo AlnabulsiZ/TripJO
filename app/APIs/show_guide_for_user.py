@@ -21,8 +21,8 @@ def show_place(
         raise HTTPException(status_code=401, detail="Invalid token")
 
     guide = db.query(User).filter(
-        User.Id == GuideInfo.id,
-        User.Role == "guide"
+        User.id == GuideInfo.id,
+        User.role == "guide"
     ).first()
 
     if not guide:

@@ -17,11 +17,11 @@ def register_user(user: UserRegister, db: Session = Depends(get_db)):
      
     try:
         new_user = User(
-            Fname=user.Fname,
-            Lname=user.Lname,
-            Email=user.email,
-            Password=generate_password_hash(user.password),
-            Role="user"
+            Fname=User.fname,
+            Lname=User.Lname,
+            Email=User.email,
+            Password=generate_password_hash(User.password),
+            Role="User"
         )
         db.add(new_user)
         db.commit()
@@ -40,27 +40,27 @@ async def register_owner(owner: OwnerRegister, images: List[UploadFile] = File(.
 
     try:
         new_owner = User(
-            Fname=owner.Fname,
-            Lname=owner.Lname,
-            Email=owner.email,
-            Phone=owner.phone,
-            Password=generate_password_hash(owner.password),
-            Role="owner"
+            fname=owner.Fname,
+            lname=owner.Lname,
+            email=owner.email,
+            phone=owner.phone,
+            password=generate_password_hash(owner.password),
+            role="owner"
         )
         db.add(new_owner)
         db.commit()
-        owner_id = new_owner.Id  
+        owner_id = new_owner.id  
 
         new_place = Place(
-            Name=owner.place.name,
-            City=owner.place.city,
-            Type=owner.place.type,
-            Description=owner.place.description,
-            OwnerId=owner_id
+            name=owner.place.name,
+            city=owner.place.city,
+            type=owner.place.type,
+            description=owner.place.description,
+            owner_id=owner_id
         )
         db.add(new_place)
         db.commit()
-        place_id = new_place.Id  
+        place_id = new_place.id  
 
         if not os.path.exists('uploads'):
             os.makedirs('uploads')
@@ -71,9 +71,9 @@ async def register_owner(owner: OwnerRegister, images: List[UploadFile] = File(.
                 f.write(await image.read())
 
             new_image = Image(
-                PlaceId=place_id,
-                ImagePath=image_path,
-                IsMain=False  
+                place_id=place_id,
+                image_path=image_path,
+                is_main=False  
             )
             db.add(new_image)
 
@@ -95,25 +95,25 @@ async def register_guide(guide: GuideRegister, image: UploadFile = File(...),db:
 
     try:
         new_guide = User(
-            Fname=guide.Fname,
-            Lname=guide.Lname,
-            Email=guide.email,
-            Phone=guide.phone,
-            Password= generate_password_hash(guide.password),
-            Role="guide",
-            NationalId=guide.national_id,
-            PersonalImage=guide.personal_image,
-            Gender=guide.gender,
-            Age=guide.age
+            fname=guide.Fname,
+            lname=guide.Lname,
+            email=guide.email,
+            phone=guide.phone,
+            password= generate_password_hash(guide.password),
+            role="guide",
+            national_id=guide.national_id,
+            personal_image=guide.personal_image,
+            gender=guide.gender,
+            age=guide.age
         )
         db.add(new_guide)
         db.commit()
         guide_id = new_guide.Id  
 
         new_image = Image(
-            PlaceId=None,  
-            ImagePath=image_path,
-            IsMain=True  
+            place_id=None,  
+            image_path=image_path,
+            is_main=True  
         )
         db.add(new_image)
         db.commit()

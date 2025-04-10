@@ -47,13 +47,13 @@ def forgot_password(data: ForgotPasswordRequest, token: str = Depends(auth_token
     
 
     try:
-        dbUser = db.query(User).filter(User.Id == userId).first() 
+        dbUser = db.query(User).filter(User.id == userId).first() 
 
         if not dbUser:
             raise HTTPException(status_code=401, detail="Invalid user")
         else:
             reset_code = generate_reset_code()
-            dbUser.ResetCode = reset_code
+            dbUser.reset_code = reset_code
 
             if send_reset_email(data.email, reset_code):
                 return {"message": "Reset code sent to your email", "status": "success"}
@@ -72,18 +72,18 @@ def reset_password(data: ResetPasswordRequest, token: str = Depends(auth_token),
     userId = get_user_from_token(token)
 
     try:
-        dbUser = db.query(User.ResetCode,User.Role,User.Password).filter(User.Id == userId).first()
+        dbUser = db.query(User.reset_code,User.role,User.password).filter(User.id == userId).first()
         validated_password=""
         if dbUser:
             new_password = data.new_password
             validated_password = validate_password(new_password)
 
         hashed_password = generate_password_hash(validated_password)
-        dbUser.ResetCode = None
-        dbUser.Password = hashed_password
+        dbUser.reset_code = None
+        dbUser.password = hashed_password
 
         return{
-            "New password" : dbUser.Password,
+            "New password" : dbUser.password,
             "message": "Password reset successfully"
         }
         
