@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from ..DB.database import get_db
-from ..models.serializers import GetFavPlace, GetFavGuide, AddToFav, GetImage
+from ..models.serializers import GetFavPlace, GetFavGuide, AddToFav, getImage
 from ..DB.tables import Favorites, Place, User, Image
 from ..APIs.account_info import get_user_from_token
 
@@ -65,7 +65,7 @@ async def get_favorite_places(
                 name=place.Name,
                 city=place.City,
                 rate=place.Rate,
-                images=[GetImage(image_path=image.ImagePath)] if image else []
+                images=[getImage(image_path=image.ImagePath)] if image else []
             ))
         
         return result

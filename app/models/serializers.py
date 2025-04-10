@@ -7,7 +7,7 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
-class GetImage(BaseModel):
+class getImage(BaseModel):
     image_path: str
 
 class getComment(BaseModel):
@@ -19,7 +19,7 @@ class getPlaceInfo(BaseModel):
     type: str
     description: str
     rate: float
-    images: List[GetImage]
+    images: List[getImage]
     isINFav: bool  
     comments: List[getComment]
 
@@ -100,7 +100,7 @@ class GetFavPlace(BaseModel):
     name: str
     city: str
     rate: float
-    images: List[GetImage]
+    images: List[getImage]
    
 class GetFavGuide(BaseModel):
     Fname: str

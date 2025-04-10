@@ -77,7 +77,7 @@ class Favorites(Base):
     Guide = relationship('Guide', backref='favorites')
 
     __table_args__ = (
-        UniqueConstraint('user_id', 'place_id', name='unique_user_place'),
+        UniqueConstraint('UserId', 'PlaceId', name='unique_user_place'),
     )
 
 
