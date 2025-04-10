@@ -7,6 +7,8 @@ from app.APIs.show_place_for_user import rou as show_place_rou
 from app.APIs.show_guide_for_user import rou as show_guide_rou
 from app.APIs.favorites import rou as favorites_rou
 from app.APIs.homeuser import rou as home_user_rou
+from app.APIs.cities import rou as cities_rou
+
 app = FastAPI()
 
 app.include_router(register_rou)
@@ -17,3 +19,4 @@ app.include_router(show_place_rou)
 app.include_router(show_guide_rou)
 app.include_router(favorites_rou)
 app.include_router(home_user_rou)
+app.include_router(cities_rou)
