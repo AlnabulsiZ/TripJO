@@ -17,26 +17,26 @@ def show_place(place_info: getPlaceInfo, token: str = Depends(auth_token), db: S
     if not user_id:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-    place = db.query(Place).filter(Place.OwnerId == user_id, Place.Name == place_info.name, Place.City == place_info.city).first()
+    place = db.query(Place).filter(Place.owner_id == user_id, Place.name == place_info.name, Place.city == place_info.city).first()
 
     if not place:
         raise HTTPException(status_code=404, detail="Place not found")
 
-    images = db.query(Image).filter(Image.PlaceId == place.Id).all()
-    image_list = [getImage(image_path=image.ImagePath) for image in images]
+    images = db.query(Image).filter(Image.place_id == place.id).all()
+    image_list = [getImage(image_path=image.image_path) for image in images]
 
-    is_fav = db.query(Favorites).filter(Favorites.UserId == user_id, Favorites.PlaceId == place.Id).first() is not None
+    is_fav = db.query(Favorites).filter(Favorites.user_id == user_id, Favorites.place_id == place.id).first() is not None
 
-    comments = db.query(Comment).filter(Comment.PlaceId == place.Id).all()
+    comments = db.query(Comment).filter(Comment.place_id == place.id).all()
 
     return {
-        "Id": place.Id,
-        "Name": place.Name,
-        "City": place.City,
-        "Type": place.Type,
-        "Description": place.Description,
-        "Rate": place.Rate,
+        "Id": place.id,
+        "Name": place.name,
+        "City": place.city,
+        "Type": place.type,
+        "Description": place.description,
+        "Rate": place.rate,
         "Images": image_list,
         "IsINFav": is_fav,
-        "Comments": [comment.Comment for comment in comments]  
+        "Comments": [Comment.comment for comment in comments]  
         }
