@@ -41,6 +41,9 @@ class Place(Base):
     Rate = Column(Float, default=0.0)
     OwnerId = Column(Integer, ForeignKey('users.Id', ondelete='CASCADE'), nullable=True)
     OwnerPlaceRelationShip = relationship('place', backref='user')
+    images = relationship('Image', back_populates='place', cascade="all, delete-orphan")
+
+
 
 
     __table_args__ =(
@@ -56,8 +59,9 @@ class Image(Base):
     ImagePath = Column(String, nullable=False, unique=True)
     IsMain = Column(Boolean, default= False)
     CreatedAt = Column(DateTime, default=func.current_timestamp)
-    placeId = Column(Integer, ForeignKey('places.id', ondelete='CASCADE'))
-    place = relationship('Places', backref='Images')
+    PlaceId = Column(Integer, ForeignKey('places.Id', ondelete='CASCADE'), nullable=False)
+    place = relationship('Place', back_populates='images')
+
 
 
 class Favorites(Base):
