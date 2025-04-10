@@ -6,8 +6,7 @@ from app.APIs.forgot_password import rou as forgot_rou
 from app.APIs.show_place_for_user import rou as show_place_rou
 from app.APIs.show_guide_for_user import rou as show_guide_rou
 from app.APIs.favorites import rou as favorites_rou
-from app.APIs.user_home import rou as user_home_rou
-
+from app.APIs.homeuser import rou as home_user_rou
 app = FastAPI()
 
 app.include_router(register_rou)
@@ -17,4 +16,4 @@ app.include_router(forgot_rou)
 app.include_router(show_place_rou)
 app.include_router(show_guide_rou)
 app.include_router(favorites_rou)
-app.include_router(user_home_rou)
+app.include_router(home_user_rou)
